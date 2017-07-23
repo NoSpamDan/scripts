@@ -46,7 +46,7 @@ export CCACHE_DIR="/home/ezio/Android/ccache"
 
 # Set the device
 echo -e "Setting the device... ${txtrst}"
-breakfast "nexus_$DEVICE-userdebug"
+breakfast "$DEVICE-userdebug"
 
 # Clean out folder
 if [ "$CLEAN" == "clean" ]
@@ -69,21 +69,30 @@ else
 fi
 
 # If the above was successful
-if [ `ls $BUILD_PATH/pure_*.zip 2>/dev/null | wc -l` != "0" ]
+if [ `ls $BUILD_PATH/ABCrom_*.zip 2>/dev/null | wc -l` != "0" ]
 then
    BUILD_RESULT="Build successful"
 
-   # Copy the device ROM.zip to root (and before doing this, remove old device builds but not the last one of them, adding an OLD_tag to it)
-   echo -e "${bldblu}Copying ROM.zip to $ROOT_PATH ${txtrst}"
-   rm OLD_pure_nexus_$DEVICE-*.zip
-   for file in pure_nexus_$DEVICE-*.zip
-   do
-       mv -f "${file}" "${file/pure/OLD_pure}"
-   done
-   cp $BUILD_PATH/pure_*.zip $ROOT_PATH
+    # Copy the device ROM.zip to root (and before doing this, remove old device builds but not the last one of them, adding an OLD_tag to it)
+    echo -e "${bldblu}Copying ROM.zip to $ROOT_PATH ${txtrst}"
 
-   # If the build failed
-   else
+    if [ `ls $ROOT_PATH/OLD_ABCrom_$DEVICE-*.zip 2>/dev/null | wc -l` != "0" ]
+    then
+    rm OLD_ABCrom_$DEVICE-*.zip
+    fi
+
+    if [ `ls $ROOT_PATH/ABCrom_$DEVICE-*.zip 2>/dev/null | wc -l` != "0" ]
+    then
+    for file in ABCrom_$DEVICE-*.zip
+    do
+        mv -f "${file}" "${file/ABCrom/OLD_ABCrom}"
+    done
+    fi
+
+    cp $BUILD_PATH/ABCrom_*.zip $ROOT_PATH
+
+    # If the build failed
+else
    BUILD_RESULT="Build failed"
 fi
 
@@ -102,6 +111,9 @@ echo -e "-------------------------------------"
 echo -e ${txtrst}
 
 BUILDTIME="Build time: $(echo $((${END}-${START})) | awk '{print int($1/60)" minutes and "int($1%60)" seconds"}')"
+
+#kill java if it's hanging on
+pkill java
 
 # Shutdown the system if required by the user
 if [ "$SHUTDOWN" == "off" ]

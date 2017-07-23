@@ -24,18 +24,21 @@ export CCACHE_DIR="/home/ezio/Android/ccache"
 
 # Set the device
 echo -e "Setting the device... ${txtrst}"
-breakfast "nexus_$DEVICE-userdebug"
+breakfast "$DEVICE-userdebug"
 
 # Start compilation with or without log
 if [ "$LOG" == "log" ]
 then
     echo -e "${bldblu}Starting build kernel for $DEVICE and saving a build log file ${txtrst}"
-    mka bootzip 2>&1 | tee buildkernel.log;
+    mka bootimage 2>&1 | tee buildkernel.log;
 else
    echo -e "${bldblu}Starting build kernel for $DEVICE without saving a build log file ${txtrst}"
-   mka bootzip;
+   mka bootimage;
 fi
 
 # Get elapsed time
 res2=$(date +%s.%N)
 echo "${bldgrn}Total time elapsed: ${txtrst}${grn}$(echo "($res2 - $res1) / 60"|bc ) minutes ($(echo "$res2 - $res1"|bc ) seconds) ${txtrst}"
+
+#kill java if it's hanging on
+pkill java
