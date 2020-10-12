@@ -9,9 +9,8 @@
 LATEST_MAKE_VERSION="4.3"
 UBUNTU_14_PACKAGES="binutils-static curl figlet libesd0-dev libwxgtk2.8-dev schedtool"
 UBUNTU_16_PACKAGES="libesd0-dev"
-UBUNTU_18_PACKAGES="curl"
-UBUNTU_20_PACKAGES="python"
-DEBIAN_10_PACKAGES="curl rsync"
+UBUNTU_20_PACKAGES="libncurses5 curl python-is-python3"
+DEBIAN_10_PACKAGES="libncurses5"
 PACKAGES=""
 
 # Install lsb-core packages
